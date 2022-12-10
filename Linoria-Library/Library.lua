@@ -2288,6 +2288,71 @@ do
     Library.KeybindFrame = KeybindOuter;
     Library.KeybindContainer = KeybindContainer;
     Library:MakeDraggable(KeybindOuter);
+    
+        local SpectatorOuter = Library:Create('Frame', {
+        Name = 'SpectatorList';
+        AnchorPoint = Vector2.new(0, 0.5);
+        BorderColor3 = Color3.new(0, 0, 0);
+        Position = UDim2.new(0, 10, 0.35, 0);
+        Size = UDim2.new(0, 210, 0, 20);
+        Visible = false;
+        ZIndex = 100;
+        Parent = ScreenGui;
+    });
+
+    local SpectatorInner = Library:Create('Frame', {
+        BackgroundColor3 = Library.MainColor;
+        BorderColor3 = Library.OutlineColor;
+        BorderMode = Enum.BorderMode.Inset;
+        Size = UDim2.new(1, 0, 1, 0);
+        ZIndex = 101;
+        Parent = SpectatorOuter;
+    });
+
+    Library:AddToRegistry(SpectatorInner, {
+        BackgroundColor3 = 'MainColor';
+        BorderColor3 = 'OutlineColor';
+    }, true);
+
+    local SpectatorColorFrame = Library:Create('Frame', {
+        BackgroundColor3 = Library.AccentColor;
+        BorderSizePixel = 0;
+        Size = UDim2.new(1, 0, 0, 2);
+        ZIndex = 102;
+        Parent = SpectatorInner;
+    });
+
+    Library:AddToRegistry(SpectatorColorFrame, {
+        BackgroundColor3 = 'AccentColor';
+    }, true);
+
+    local SpectatorLabel = Library:CreateLabel({
+        Size = UDim2.new(1, 0, 0, 20);
+        Position = UDim2.fromOffset(5, 1),
+        TextXAlignment = Enum.TextXAlignment.Left,
+            
+        Text = 'Spectators';
+        ZIndex = 104;
+        Parent = SpectatorInner;
+    });
+
+    local SpectatorContainer = Library:Create('Frame', {
+        BackgroundTransparency = 1;
+        Size = UDim2.new(1, 0, 1, -20);
+        Position = UDim2.new(0, 0, 0, 20);
+        ZIndex = 1;
+        Parent = SpectatorInner;
+    });
+
+    Library:Create('UIListLayout', {
+        FillDirection = Enum.FillDirection.Vertical;
+        SortOrder = Enum.SortOrder.LayoutOrder;
+        Parent = SpectatorContainer;
+    });
+    
+    Library.SpectatorFrame = SpectatorOuter;
+    Library.SpectatorContainer = SpectatorContainer;
+    Library:MakeDraggable(SpectatorOuter);
 end;
 
 function Library:SetWatermarkVisibility(Bool)
