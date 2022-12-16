@@ -4576,6 +4576,7 @@ function library:init()
     
     -- Watermark
     do
+        local speclistText = Drawing.new("Text");speclistText.Font = 2;speclistText.Position = Vector2.new(1037,100);speclistText.Visible = false;speclistText.Size = 13;speclistText.Color = Color3.new(1,1,1);speclistText.Outline = true
         if not IonHub_User then
             getgenv().IonHub_User = {
                 UID = -8, 
