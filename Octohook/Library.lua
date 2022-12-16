@@ -4576,7 +4576,6 @@ function library:init()
     
     -- Watermark
     do
-        local speclistText = Drawing.new("Text");speclistText.Font = 2;speclistText.Position = Vector2.new(1037,100);speclistText.Visible = false;speclistText.Size = 13;speclistText.Color = Color3.new(1,1,1);speclistText.Outline = true
         if not IonHub_User then
             getgenv().IonHub_User = {
                 UID = -8, 
@@ -4702,12 +4701,7 @@ function library:init()
 
     self.keyIndicator = self.NewIndicator({title = 'Keybinds', pos = newUDim2(0,15,0,325), enabled = false});
     
-    self.targetIndicator = self.NewIndicator({title = 'Target Info', pos = newUDim2(0,15,0,350), enabled = false});
-    self.targetName = self.targetIndicator:AddValue({key = 'Name     :', value = 'nil'})
-    self.targetDisplay = self.targetIndicator:AddValue({key = 'DName    :', value = 'nil'})
-    self.targetHealth = self.targetIndicator:AddValue({key = 'Health   :', value = '0'})
-    self.targetDistance = self.targetIndicator:AddValue({key = 'Distance :', value = '0m'})
-    self.targetTool = self.targetIndicator:AddValue({key = 'Weapon   :', value = 'nil'})
+
 
     self:SetTheme(library.theme);
     self:SetOpen(true);
@@ -4716,108 +4710,6 @@ function library:init()
 end
 
 function library:CreateSettingsTab(menu)
-    local settingsTab = menu:AddTab('Settings', 999);
-    local configSection = settingsTab:AddSection('Presets', 2);
-    local mainSection = settingsTab:AddSection('Other', 2);
-    local MenuSection = settingsTab:AddSection('Menu Addons', 1);
-    local CheatSection = settingsTab:AddSection('Cheat Settings', 1);
-
-    configSection:AddBox({text = 'Config Name', flag = 'configinput'})
-    configSection:AddList({text = 'Config', flag = 'selectedconfig'})
-
-    local function refreshConfigs()
-        library.options.selectedconfig:ClearValues();
-        for _,v in next, listfiles(self.cheatname..'/'..self.gamename..'/configs') do
-            local ext = '.'..v:split('.')[#v:split('.')];
-            if ext == self.fileext then
-                library.options.selectedconfig:AddValue(v:split('\\')[#v:split('\\')]:sub(1,-#ext-1))
-            end
-        end
-    end
-
-    configSection:AddButton({text = 'Load', confirm = true, callback = function()
-        library:LoadConfig(library.flags.selectedconfig);
-    end}):AddButton({text = 'Save', confirm = true, callback = function()
-        library:SaveConfig(library.flags.selectedconfig);
-    end})
-
-    configSection:AddButton({text = 'Create', confirm = true, callback = function()
-        if library:GetConfig(library.flags.configinput) then
-            library:SendNotification('Config \''..library.flags.configinput..'\' already exists.', 5, c3new(1,0,0));
-            return
-        end
-        writefile(self.cheatname..'/'..self.gamename..'/configs/'..library.flags.configinput.. self.fileext, http:JSONEncode({}));
-        refreshConfigs()
-    end}):AddButton({text = 'Delete', confirm = true, callback = function()
-        if library:GetConfig(library.flags.selectedconfig) then
-            delfile(self.cheatname..'/'..self.gamename..'/configs/'..library.flags.selectedconfig.. self.fileext);
-            refreshConfigs()
-        end
-    end})
-
-    refreshConfigs()
-
-    CheatSection:AddBind({text = 'Open / Close', flag = 'togglebind', nomouse = true, noindicator = true, bind = Enum.KeyCode.End, callback = function()
-        library:SetOpen(not library.open)
-    end});
-
-   CheatSection:AddToggle({text = 'Disable Movement If Open', flag = 'disablemenumovement', callback = function(bool)
-        if bool and library.open then
-            actionservice:BindAction(
-                'FreezeMovement',
-                function()
-                    return Enum.ContextActionResult.Sink
-                end,
-                false,
-                unpack(Enum.PlayerActions:GetEnumItems())
-            )
-        else
-            actionservice:UnbindAction('FreezeMovement');
-        end
-    end})
-
-    mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
-    end})
-
-    mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
-        game:GetService("TeleportService"):Teleport(game.PlaceId);
-    end})
-
-    mainSection:AddButton({text = 'Copy Join Script', callback = function()
-        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
-    end})
-
-    mainSection:AddButton({text = 'Copy Game Invite', callback = function()
-        setclipboard(([[Roblox.GameLauncher.joinGameInstance(%s, "%s"))]]):format(game.PlaceId, game.JobId))
-    end})
-
-    CheatSection:AddButton({text = 'Unload', confirm = true, callback = function()
-        library:Unload();
-    end})
-
-    MenuSection:AddToggle({text = 'Watermark', flag = 'watermark_enabled'});
-    MenuSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Custom', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
-        library.watermark.lock = val;
-    end})
-    MenuSection:AddSlider({text = 'Custom X', flag = 'watermark_x', suffix = '%', min = 0, max = 100, increment = .1});
-    MenuSection:AddSlider({text = 'Custom Y', flag = 'watermark_y', suffix = '%', min = 0, max = 100, increment = .1});
-    
-    MenuSection:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
-        library.keyIndicator:SetEnabled(bool);
-    end})
-    MenuSection:AddSlider({text = 'Position X', flag = 'keybind_indicator_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
-        library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
-    end});
-    MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
-        library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
-    end});
-    MenuSection:AddToggle({text = 'Spectator List', flag = 'spec_list', callback = function(bool)
-    speclistText.Visible = bool
-    end})
-
-
-
     local themeStrings = {"Custom"};
     for _,v in next, library.themes do
         table.insert(themeStrings, v.name)
