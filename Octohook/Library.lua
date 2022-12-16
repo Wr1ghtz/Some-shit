@@ -4727,7 +4727,7 @@ function library:init()
     self.targetTool = self.targetIndicator:AddValue({key = 'Weapon   :', value = 'nil'})
 
     self.SpectatorsIndicator = self.NewIndicator({title = 'Spectators', pos = newUDim2(0,10,0,325), enabled = false});
-    SpectatorsTest = self.TextSpectatorsIndicator:AddValue({key = 'Test', enabled = false});
+    SpectatorsTest = self.SpectatorsIndicator:AddValue({key = 'Test', enabled = false});
     SpectatorsTest:SetKey(GetSpectators())
     
     self:SetTheme(library.theme);
