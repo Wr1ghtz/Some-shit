@@ -4718,7 +4718,7 @@ function library:CreateSettingsTab(menu)
 
     configSection:AddBox({text = 'Config Name', flag = 'configinput'})
     configSection:AddList({text = 'Config', flag = 'selectedconfig'})
-
+    
     local function refreshConfigs()
         library.options.selectedconfig:ClearValues();
         for _,v in next, listfiles(self.cheatname..'/'..self.gamename..'/configs') do
