@@ -4708,9 +4708,6 @@ function library:init()
     self.targetDistance = self.targetIndicator:AddValue({key = 'Distance :', value = '0m'})
     self.targetTool = self.targetIndicator:AddValue({key = 'Weapon   :', value = 'nil'})
 
-    self.SpectatorsIndicator = self.NewIndicator({title = 'Spectators', pos = newUDim2(0,15,0,325), enabled = false});
-    self.SpectatorName = self.SpectatorsIndicator:AddValue({key = 'Name:', value = 'nil'})
-
     self:SetTheme(library.theme);
     self:SetOpen(true);
     self.hasInit = true
@@ -4815,15 +4812,7 @@ function library:CreateSettingsTab(menu)
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
     
-    MenuSection:AddToggle({text = 'Spectator List', flag = 'spectator_list', callback = function(bool)
-        library.SpectatorsIndicator:SetEnabled(bool);     
-    end})
-    MenuSection:AddSlider({text = 'Position X', flag = 'spectator_list_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
-        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.spectator_list_x / 100, 0, library.flags.spectator_list_y / 100, 0));    
-    end});
-    MenuSection:AddSlider({text = 'Position Y', flag = 'spectator_list_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
-        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.spectator_list_x / 100, 0, library.flags.spectator_list_y / 100, 0));    
-    end});
+
 
 
     local themeStrings = {"Custom"};
