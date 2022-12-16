@@ -4811,7 +4811,9 @@ function library:CreateSettingsTab(menu)
     MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
-    
+    MenuSection:AddToggle({text = 'Spectator List', flag = 'spec_list', callback = function(bool)
+    speclistText.Visible = bool
+    end})
 
 
 
