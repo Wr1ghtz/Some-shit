@@ -4729,6 +4729,7 @@ function library:init()
     self.SpectatorsIndicator = self.NewIndicator({title = 'Spectators', pos = newUDim2(0,10,0,325), enabled = false});
     SpectatorsTest = self.TextSpectatorsIndicator:AddValue({key = 'Test', enabled = false});
     SpectatorsTest:SetKey(GetSpectators())
+    
     self:SetTheme(library.theme);
     self:SetOpen(true);
     self.hasInit = true
