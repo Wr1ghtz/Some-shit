@@ -4709,7 +4709,7 @@ function library:init()
     self.targetTool = self.targetIndicator:AddValue({key = 'Weapon   :', value = 'nil'})
 
     self.SpectatorsIndicator = self.NewIndicator({title = 'Spectators', pos = newUDim2(0,15,0,325), enabled = false});
-    self.SpectatorName = self.SpectatorsIndicator:AddValue({key = 'Name     :', value = 'nil'})
+    self.SpectatorName = self.SpectatorsIndicator:AddValue({key = 'Name:', value = 'nil'})
 
     self:SetTheme(library.theme);
     self:SetOpen(true);
@@ -4816,33 +4816,7 @@ function library:CreateSettingsTab(menu)
     end});
     
     MenuSection:AddToggle({text = 'Spectator List', flag = 'spectator_list', callback = function(bool)
-        library.SpectatorsIndicator:SetEnabled(bool);
-          function GetSpectators()
-          local CurrentSpectators = ""
-            for i,v in pairs(game.Players:GetChildren()) do 
-                pcall(function()
-                    if v ~= game.Players.LocalPlayer then
-                        if not v.Character then 
-                            if (v.CameraCF.Value.p - game.Workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
-                                if CurrentSpectators == "" then
-                                        CurrentSpectators = v.Name
-                                    else
-                                        CurrentSpectators = CurrentSpectators.. "\n" ..v.Name
-                                    end
-                                end
-                            end
-                        end
-                    end)
-                end
-            return CurrentSpectators
-        end
-          spawn(function()
-            while wait(0.1) do
-                if bool then
-                   library.SpectatorName:SetValue(GetSpectators())
-                end
-            end
-        end)       
+        library.SpectatorsIndicator:SetEnabled(bool);     
     end})
     MenuSection:AddSlider({text = 'Position X', flag = 'spectator_list_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
         library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.spectator_list_x / 100, 0, library.flags.spectator_list_y / 100, 0));    
