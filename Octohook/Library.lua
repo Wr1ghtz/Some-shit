@@ -4834,14 +4834,14 @@ function library:CreateSettingsTab(menu)
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
     
-    MenuSection:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
+    MenuSection:AddToggle({text = 'Spectator List', flag = 'spectator_list', callback = function(bool)
         library.SpectatorsIndicator:SetEnabled(bool);
     end})
-    MenuSection:AddSlider({text = 'Position X', flag = 'keybind_indicator_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
-        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
+    MenuSection:AddSlider({text = 'Position X', flag = 'spectator_list_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
+        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.spectator_list_x / 100, 0, library.flags.spectator_list_y / 100, 0));    
     end});
-    MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
-        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
+    MenuSection:AddSlider({text = 'Position Y', flag = 'spectator_list_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
+        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.spectator_list_x / 100, 0, library.flags.spectator_list_y / 100, 0));    
     end});
 
 
