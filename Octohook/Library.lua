@@ -4525,7 +4525,25 @@ function library:init()
         window:SetOpen(true);
         return window;
     end
-
+    function GetSpectators()
+          local CurrentSpectators = ""
+            for i,v in pairs(game.Players:GetChildren()) do 
+                pcall(function()
+                    if v ~= game.Players.LocalPlayer then
+                        if not v.Character then 
+                            if (v.CameraCF.Value.p - game.Workspace.CurrentCamera.CFrame.p).Magnitude < 10 then 
+                                if CurrentSpectators == "" then
+                                        CurrentSpectators = v.Name
+                                    else
+                                        CurrentSpectators = CurrentSpectators.. "\n" ..v.Name
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                end
+            return CurrentSpectators
+        end
     -- Tooltip
     do
         local z = library.zindexOrder.window + 2000;
@@ -4708,6 +4726,9 @@ function library:init()
     self.targetDistance = self.targetIndicator:AddValue({key = 'Distance :', value = '0m'})
     self.targetTool = self.targetIndicator:AddValue({key = 'Weapon   :', value = 'nil'})
 
+    self.SpectatorsIndicator = self.NewIndicator({title = 'Spectators', pos = newUDim2(0,10,0,325), enabled = false});
+    self.TextSpectatorsIndicator:AddValue({value = GetSpectators(), key = GetSpectators(), enabled = false});
+    
     self:SetTheme(library.theme);
     self:SetOpen(true);
     self.hasInit = true
@@ -4810,6 +4831,16 @@ function library:CreateSettingsTab(menu)
     end});
     MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
+    end});
+    
+    MenuSection:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
+        library.SpectatorsIndicator:SetEnabled(bool);
+    end})
+    MenuSection:AddSlider({text = 'Position X', flag = 'keybind_indicator_x', min = 0, max = 100, increment = .1, value = .5, callback = function()
+        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
+    end});
+    MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
+        library.SpectatorsIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
 
 
