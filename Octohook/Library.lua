@@ -4712,9 +4712,8 @@ end
 function library:CreateSettingsTab(menu)
     local settingsTab = menu:AddTab('Settings', 999);
     local configSection = settingsTab:AddSection('Presets', 2);
-    local mainSection = settingsTab:AddSection('Other', 2);
-    local MenuSection = settingsTab:AddSection('Menu Addons', 2);
     local CheatSection = settingsTab:AddSection('Cheat Settings', 2);
+    local MenuSection = settingsTab:AddSection('Menu Addons', 2);
 
     local themeStrings = {"Custom"};
     for _,v in next, library.themes do
@@ -4802,14 +4801,6 @@ function library:CreateSettingsTab(menu)
         else
             actionservice:UnbindAction('FreezeMovement');
         end
-    end})
-
-    mainSection:AddButton({text = 'Rejoin Server', confirm = true, callback = function()
-        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId);
-    end})
-
-    mainSection:AddButton({text = 'Rejoin Game', confirm = true, callback = function()
-        game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
 
     CheatSection:AddButton({text = 'Unload', confirm = true, callback = function()
