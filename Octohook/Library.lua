@@ -4713,8 +4713,42 @@ function library:CreateSettingsTab(menu)
     local settingsTab = menu:AddTab('Settings', 999);
     local configSection = settingsTab:AddSection('Presets', 2);
     local mainSection = settingsTab:AddSection('Other', 2);
-    local MenuSection = settingsTab:AddSection('Menu Addons', 1);
-    local CheatSection = settingsTab:AddSection('Cheat Settings', 1);
+    local MenuSection = settingsTab:AddSection('Menu Addons', 2);
+    local CheatSection = settingsTab:AddSection('Cheat Settings', 2);
+
+    local themeStrings = {"Custom"};
+    for _,v in next, library.themes do
+        table.insert(themeStrings, v.name)
+    end
+    local themeSection = settingsTab:AddSection('Theme', 1);
+    local setByPreset = false
+
+    themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
+        if newTheme == "Custom" then return end
+        setByPreset = true
+        for _,v in next, library.themes do
+            if v.name == newTheme then
+                for x, d in pairs(library.options) do
+                    if v.theme[tostring(x)] ~= nil then
+                        d:SetColor(v.theme[tostring(x)])
+                    end
+                end
+                library:SetTheme(v.theme)
+                break
+            end
+        end
+        setByPreset = false
+    end}):Select('Default');
+
+    for i, v in pairs(library.theme) do
+        themeSection:AddColor({text = i, flag = i, color = library.theme[i], callback = function(c3)
+            library.theme[i] = c3
+            library:SetTheme(library.theme)
+            if not setByPreset and not setByConfig then 
+                library.options.preset_theme:Select('Custom')
+            end
+        end});
+    end
 
     configSection:AddBox({text = 'Config Name', flag = 'configinput'})
     configSection:AddList({text = 'Config', flag = 'selectedconfig'})
@@ -4778,14 +4812,6 @@ function library:CreateSettingsTab(menu)
         game:GetService("TeleportService"):Teleport(game.PlaceId);
     end})
 
-    mainSection:AddButton({text = 'Copy Join Script', callback = function()
-        setclipboard(([[game:GetService("TeleportService"):TeleportToPlaceInstance(%s, "%s")]]):format(game.PlaceId, game.JobId))
-    end})
-
-    mainSection:AddButton({text = 'Copy Game Invite', callback = function()
-        setclipboard(([[Roblox.GameLauncher.joinGameInstance(%s, "%s"))]]):format(game.PlaceId, game.JobId))
-    end})
-
     CheatSection:AddButton({text = 'Unload', confirm = true, callback = function()
         library:Unload();
     end})
@@ -4806,41 +4832,6 @@ function library:CreateSettingsTab(menu)
     MenuSection:AddSlider({text = 'Position Y', flag = 'keybind_indicator_y', min = 0, max = 100, increment = .1, value = 35, callback = function()
         library.keyIndicator:SetPosition(newUDim2(library.flags.keybind_indicator_x / 100, 0, library.flags.keybind_indicator_y / 100, 0));    
     end});
-
-    local themeStrings = {"Custom"};
-    for _,v in next, library.themes do
-        table.insert(themeStrings, v.name)
-    end
-    local themeTab = menu:AddTab('Theme', 990);
-    local themeSection = themeTab:AddSection('Theme', 1);
-    local setByPreset = false
-
-    themeSection:AddList({text = 'Presets', flag = 'preset_theme', values = themeStrings, callback = function(newTheme)
-        if newTheme == "Custom" then return end
-        setByPreset = true
-        for _,v in next, library.themes do
-            if v.name == newTheme then
-                for x, d in pairs(library.options) do
-                    if v.theme[tostring(x)] ~= nil then
-                        d:SetColor(v.theme[tostring(x)])
-                    end
-                end
-                library:SetTheme(v.theme)
-                break
-            end
-        end
-        setByPreset = false
-    end}):Select('Default');
-
-    for i, v in pairs(library.theme) do
-        themeSection:AddColor({text = i, flag = i, color = library.theme[i], callback = function(c3)
-            library.theme[i] = c3
-            library:SetTheme(library.theme)
-            if not setByPreset and not setByConfig then 
-                library.options.preset_theme:Select('Custom')
-            end
-        end});
-    end
 
     return settingsTab;
 end
