@@ -4583,11 +4583,11 @@ function library:init()
                 {game.Players.LocalPlayer.Name, true},
                 {self.gamename, false},
                 {'0 fps', false},
-                {'0ms', false},
+                {'0ms', true},
                 {'00:00:00', false},
                 {'M, D, Y', true},
             };
-            lock = 'top right';
+            lock = 'top left';
             position = newUDim2(0,0,0,0);
             refreshrate = 25;
         }
@@ -4623,7 +4623,6 @@ function library:init()
                     self.lock == 'Bottom Right' and newUDim2(0, screensize.X - size.X - 15, 0, screensize.Y - size.Y - 15) or
                     self.lock == 'Bottom Left' and newUDim2(0, 15, 0, screensize.Y - size.Y - 15) or
                     self.lock == 'Top' and newUDim2(0, screensize.X / 2 - size.X / 2, 0, 15) or
-                    newUDim2(library.flags.watermark_x / 100, 0, library.flags.watermark_y / 100, 0)
                 )
 
                 self.objects.background.Position = self.position
@@ -4802,11 +4801,9 @@ function library:CreateSettingsTab(menu)
     end})
 
     MenuSection:AddToggle({text = 'Watermark', flag = 'watermark_enabled'});
-    MenuSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Top Right', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
+    MenuSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Top Left', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right'}, callback = function(val)
         library.watermark.lock = val;
     end})
-    MenuSection:AddSlider({text = 'Custom X', flag = 'watermark_x', suffix = '%', min = 0, max = 100, increment = .1});
-    MenuSection:AddSlider({text = 'Custom Y', flag = 'watermark_y', suffix = '%', min = 0, max = 100, increment = .1});
     
     MenuSection:AddToggle({text = 'Keybind Indicator', flag = 'keybind_indicator', callback = function(bool)
         library.keyIndicator:SetEnabled(bool);
