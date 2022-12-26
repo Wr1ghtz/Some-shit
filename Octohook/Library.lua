@@ -4802,7 +4802,7 @@ function library:CreateSettingsTab(menu)
     end})
 
     MenuSection:AddToggle({text = 'Watermark', flag = 'watermark_enabled'});
-    MenuSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Custom', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
+    MenuSection:AddList({text = 'Position', flag = 'watermark_pos', selected = 'Top Right', values = {'Top', 'Top Left', 'Top Right', 'Bottom Left', 'Bottom Right', 'Custom'}, callback = function(val)
         library.watermark.lock = val;
     end})
     MenuSection:AddSlider({text = 'Custom X', flag = 'watermark_x', suffix = '%', min = 0, max = 100, increment = .1});
