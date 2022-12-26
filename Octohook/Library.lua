@@ -4576,24 +4576,18 @@ function library:init()
     
     -- Watermark
     do
-        if not IonHub_User then
-            getgenv().IonHub_User = {
-                UID = -8, 
-                User = "Developer"
-            }
-        end
         self.watermark = {
             objects = {};
             text = {
                 {self.cheatname, true},
-                {("%s (uid %s)"):format(IonHub_User.User, tostring(IonHub_User.UID)), true},
-                {self.gamename, true},
-                {'0 fps', true},
-                {'0ms', true},
-                {'00:00:00', true},
+                {game.Players.LocalPlayer.Name, true},
+                {self.gamename, false},
+                {'0 fps', false},
+                {'0ms', false},
+                {'00:00:00', false},
                 {'M, D, Y', true},
             };
-            lock = 'custom';
+            lock = 'top right';
             position = newUDim2(0,0,0,0);
             refreshrate = 25;
         }
